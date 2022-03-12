@@ -12,13 +12,19 @@ const FormularioCadastro = ({ onSubmit, validatioCpf }) => {
     cpf: { valido: true, texto: 'Texto Inicial' },
   });
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onSubmit({ nome, sobrenome, cpf, novidade, promocoes });
+  };
+  const handleValidationCpf = () => {
+    const valido = validatioCpf(cpf);
+    setErros({
+      cpf: valido,
+    });
+  };
+
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-        onSubmit({ nome, sobrenome, cpf, novidade, promocoes });
-      }}
-    >
+    <form onSubmit={handleSubmit}>
       <TextField
         value={nome}
         onChange={({ target }) => {
@@ -44,12 +50,7 @@ const FormularioCadastro = ({ onSubmit, validatioCpf }) => {
         onChange={({ target }) => {
           setCpf(target.value);
         }}
-        onBlur={(event) => {
-          const valido = validatioCpf(cpf);
-          setErros({
-            cpf: valido,
-          });
-        }}
+        onBlur={handleValidationCpf}
         error={!erros.cpf.valido}
         helperText={erros.cpf.texto}
         id="cpf"
