@@ -1,5 +1,5 @@
 import './App.css';
-import FormularioCadastro from './Components/FormularioCadastro';
+import FormularioCadastro from './Components/pages/FormularioCadastro';
 import { Container, Typography } from '@mui/material';
 import '@fontsource/roboto/300.css';
 
@@ -16,12 +16,18 @@ const App = () => {
     }
   };
   return (
-    <Container component="article" maxWidth="sm">
-      <Typography variant="h3" align="center" component="h1">
-        Formulário Com Hooks
-      </Typography>
-      <FormularioCadastro onSubmit={onSubmit} validatioCpf={validatioCpf} />
-    </Container>
+    <div className="geral">
+      <Container component="article" maxWidth="sm" className="top">
+        <Typography variant="h3" align="center" component="h1">
+          Cadastra-se
+        </Typography>
+        <FormularioCadastro
+          className="form"
+          onSubmit={onSubmit}
+          validatioCpf={validatioCpf}
+        />
+      </Container>
+    </div>
   );
 };
 
