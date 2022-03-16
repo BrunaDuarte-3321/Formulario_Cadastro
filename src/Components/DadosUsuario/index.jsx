@@ -1,11 +1,17 @@
 import { Button, TextField } from '@mui/material';
 import React from 'react';
 
-const DadosUsuario = () => {
+const DadosUsuario = ({ onSubmit }) => {
   return (
-    <form action="">
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        onSubmit();
+      }}
+    >
       <TextField
         id="email"
+        required
         label="email"
         type="email"
         variant="outlined"
@@ -15,12 +21,15 @@ const DadosUsuario = () => {
       <TextField
         id="senha"
         label="senha"
+        required
         type="password"
         variant="outlined"
         fullWidth
         margin="normal"
       />
-      <Button variant="contained" type="submit">Cadastrar</Button>
+      <Button variant="contained" type="submit">
+        Cadastrar
+      </Button>
     </form>
   );
 };
