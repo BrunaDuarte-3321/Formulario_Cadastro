@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Button, TextField, Switch, FormControlLabel } from '@mui/material';
 import ValidacoesCadastro from '../../contexts/ValidacoesCadastro';
+import useErros from '../../hooks/useErros';
 
 const DadosPessoais = ({ onSubmit }) => {
   const [nome, setNome] = useState('');
@@ -10,16 +11,8 @@ const DadosPessoais = ({ onSubmit }) => {
   const [novidade, setNovidade] = useState(true);
 
   const validacoes = useContext(ValidacoesCadastro);
-  const [erros, setErros] = useState({
-    cpf: { valido: true, texto: '' },
-    nome: { valido: true, texto: '' },
-  });
-  const ValidarCampos = (event) => {
-    const { name, value } = event.target;
-    const novoEstado = { ...erros };
-    novoEstado[name] = validacoes[name](value);
-    setErros(novoEstado);
-  };
+
+  const [erros, validarCampos, possoEnviar] = useErros(validacoes);
   const handleSubmit = (event) => {
     event.preventDefault();
     if (possoEnviar()) {
@@ -27,14 +20,6 @@ const DadosPessoais = ({ onSubmit }) => {
     }
   };
 
-  const possoEnviar = () => {
-    for (let campo in erros) {
-      if (!erros[campo].valido) {
-        return false;
-      }
-    }
-    return true;
-  };
   return (
     <form onSubmit={handleSubmit}>
       <TextField
@@ -42,7 +27,7 @@ const DadosPessoais = ({ onSubmit }) => {
         onChange={({ target }) => {
           setNome(target.value);
         }}
-        onBlur={ValidarCampos}
+        onBlur={validarCampos}
         error={!erros.nome.valido}
         helperText={erros.nome.texto}
         id="nome"
@@ -67,7 +52,7 @@ const DadosPessoais = ({ onSubmit }) => {
         onChange={({ target }) => {
           setCpf(target.value);
         }}
-        onBlur={ValidarCampos}
+        onBlur={validarCampos}
         error={!erros.cpf.valido}
         helperText={erros.cpf.texto}
         id="cpf"

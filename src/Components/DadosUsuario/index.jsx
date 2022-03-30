@@ -1,31 +1,15 @@
 import { Button, TextField } from '@mui/material';
 import React, { useState, useContext } from 'react';
 import ValidacoesCadastro from '../../contexts/ValidacoesCadastro';
+import useErros from '../../hooks/useErros';
 
 const DadosUsuario = ({ onSubmit }) => {
   const [email, SetEmail] = useState('');
   const [senha, setsenha] = useState('');
-
   const validacoes = useContext(ValidacoesCadastro);
 
-  const [erros, setErros] = useState({
-    senha: { valido: true, texto: '' },
-  });
+  const [erros, validarCampos, possoEnviar] = useErros(validacoes);
 
-  const ValidarCampos = (event) => {
-    const { name, value } = event.target;
-    const novoEstado = { ...erros };
-    novoEstado[name] = validacoes[name](value);
-    setErros(novoEstado);
-  };
-  const possoEnviar = () => {
-    for (let campo in erros) {
-      if (!erros[campo].valido) {
-        return false;
-      }
-    }
-    return true;
-  };
   return (
     <form
       onSubmit={(event) => {
@@ -54,7 +38,7 @@ const DadosUsuario = ({ onSubmit }) => {
         onChange={({ target }) => {
           setsenha(target.value);
         }}
-        onBlur={ValidarCampos}
+        onBlur={validarCampos}
         error={!erros.senha.valido}
         helperText={erros.senha.texto}
         id="senha"
